@@ -1,5 +1,7 @@
 package in.madhu.crud.Service;
 
+import in.madhu.crud.Dto.RequestDto;
+import in.madhu.crud.Dto.ResponseDto;
 import in.madhu.crud.Entity.Student;
 import in.madhu.crud.Repostiry.StudentRepostiry;
 import org.springframework.stereotype.Component;
@@ -16,11 +18,11 @@ public class StudentService {
         this.studentRepostiry=studentRepostiry;
     }
 
-    public Student create(Student studentreq){
+    public ResponseDto create(RequestDto studentreq){
 
-        Student stu=studentRepostiry.save(studentreq);
-
-        return stu;
+        Student stu=mapToEntity(studentreq);
+        Student stu2=studentRepostiry.save(stu);
+        return mapToDto(stu2);
     }
     public Student getstudent(Integer id){
         Optional<Student> res=studentRepostiry.findByIdAndDeletedIsFalse(id);
@@ -59,5 +61,24 @@ public class StudentService {
     tosave.setDeleted(true);
         studentRepostiry.save(tosave);
         return true;
+    }
+    private Student mapToEntity(RequestDto requestDto) {
+        Student student=new Student();
+        student.setName(requestDto.getName());
+        student.setRollno(requestDto.getRollno());
+        student.setSubject(requestDto.getSubject());
+        student.setEmail(requestDto.getEmail());
+        student.setDeleted(false);
+        return student;
+    }
+    private ResponseDto mapToDto(Student student) {
+        ResponseDto responseDto=new ResponseDto();
+        responseDto.setEmail(student.getEmail());
+        responseDto.setId(student.getId());
+        responseDto.setName(student.getName());
+        responseDto.setRollno(student.getRollno());
+        responseDto.setSubject(student.getSubject());
+        responseDto.setMessage("Student Saved successful");
+        return responseDto;
     }
 }

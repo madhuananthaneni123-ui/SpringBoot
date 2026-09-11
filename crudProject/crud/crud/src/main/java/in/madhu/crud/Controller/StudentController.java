@@ -1,5 +1,7 @@
 package in.madhu.crud.Controller;
 
+import in.madhu.crud.Dto.RequestDto;
+import in.madhu.crud.Dto.ResponseDto;
 import in.madhu.crud.Entity.Student;
 import in.madhu.crud.Service.StudentService;
 import org.apache.el.parser.BooleanNode;
@@ -18,9 +20,9 @@ public class StudentController {
         this.studentService=studentService;
     }
     @PostMapping("/create")
-    public ResponseEntity<Student> create(@RequestBody Student student) {
-        student.setDeleted(false);
-        Student studentreq=studentService.create(student);
+    public ResponseEntity<ResponseDto> create(@RequestBody RequestDto student) {
+//        student.setDeleted(false);
+        ResponseDto studentreq=studentService.create(student);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
