@@ -2,6 +2,8 @@ package in.madhu.crud.Controller;
 
 import in.madhu.crud.Dto.RequestDto;
 import in.madhu.crud.Dto.ResponseDto;
+import in.madhu.crud.Dto.UpdateRequestDto;
+import in.madhu.crud.Dto.UpdateResponseDto;
 import in.madhu.crud.Entity.Student;
 import in.madhu.crud.Service.StudentService;
 import org.apache.el.parser.BooleanNode;
@@ -21,16 +23,14 @@ public class StudentController {
     }
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> create(@RequestBody RequestDto student) {
-//        student.setDeleted(false);
         ResponseDto studentreq=studentService.create(student);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(studentreq);
     }
     @GetMapping("/get/{id}")
-    public ResponseEntity<Student> Get(@PathVariable Integer id){
-        Student stu=studentService.getstudent(id);
+    public ResponseEntity<ResponseDto> Get(@PathVariable Integer id){
+        ResponseDto stu=studentService.getstudent(id);
         if(stu==null){
             return ResponseEntity.notFound().build();
         }
@@ -45,8 +45,8 @@ public class StudentController {
         return ResponseEntity.ok(stures);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Student> update(@PathVariable Integer id,@RequestBody Student student){
-        Student up=studentService.stuup(student,id);
+    public ResponseEntity<UpdateResponseDto> update(@PathVariable Integer id, @RequestBody UpdateRequestDto student){
+        UpdateResponseDto up=studentService.stuup(student,id);
         if(up==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(up);
 

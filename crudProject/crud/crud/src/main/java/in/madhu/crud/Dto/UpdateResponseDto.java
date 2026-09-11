@@ -2,7 +2,7 @@ package in.madhu.crud.Dto;
 
 import java.time.LocalDateTime;
 
-public class ResponseDto {
+public class UpdateResponseDto {
     private int id;
     private String name;
     private String email;
@@ -10,22 +10,6 @@ public class ResponseDto {
     private String subject;
     private String message;
     private LocalDateTime updatedAt;
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public int getId() {
         return id;
@@ -65,5 +49,21 @@ public class ResponseDto {
 
     public void setRollno(int rollno) {
         this.rollno = rollno;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
