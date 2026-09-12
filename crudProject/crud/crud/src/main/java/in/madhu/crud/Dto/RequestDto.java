@@ -1,9 +1,18 @@
 package in.madhu.crud.Dto;
 
+import jakarta.validation.constraints.*;
+
 public class RequestDto {
+    @NotBlank(message = "name should not be Null")
+    @Size(min = 5,max = 50,message = "Size should be B/w 5 to 50")
     private String name;
+
+    @Email(message = "Enter Correct Email")
     private String email;
+
     private int rollno;
+
+    @NotBlank
     private String subject;
 
     public String getName() {

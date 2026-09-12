@@ -30,14 +30,15 @@ public class StudentService {
     public ResponseDto getstudent(Integer id){
         Optional<Student> res=studentRepostiry.findByIdAndDeletedIsFalse(id);
         if(res.isPresent()){
-             ResponseDto responseDto=mapToDto(res.get());
-             return responseDto;
+             return mapToDto(res.get());
         }
         return null;
     }
-    public List<Student> getstuall() {
+    public List<UpdateResponseDto> getstuall() {
         List<Student> rew=studentRepostiry.findByDeletedIsFalse();
-        return rew;
+        return rew.stream()
+                .map(this::maptoupdate)
+                .toList();
     }
     public UpdateResponseDto stuup(UpdateRequestDto student, Integer id){
         Optional<Student> tr=studentRepostiry.findById(id);
