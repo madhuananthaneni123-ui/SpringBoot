@@ -32,17 +32,11 @@ public class StudentController {
     @GetMapping("{id}")
     public ResponseEntity<ResponseDto> Get(@PathVariable Integer id){
         ResponseDto stu=studentService.getstudent(id);
-        if(stu==null){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(stu);
     }
     @GetMapping
     public ResponseEntity<List<UpdateResponseDto>> getAll(){
         List<UpdateResponseDto> stures=studentService.getstuall();
-        if(stures.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(stures);
     }
     @PutMapping("{id}")

@@ -5,10 +5,13 @@ import in.madhu.crud.Dto.ResponseDto;
 import in.madhu.crud.Dto.UpdateRequestDto;
 import in.madhu.crud.Dto.UpdateResponseDto;
 import in.madhu.crud.Entity.Student;
+import in.madhu.crud.Exception.DuplicateResourceException;
+import in.madhu.crud.Exception.ResourceNotFoundException;
 import in.madhu.crud.Repostiry.StudentRepostiry;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.lang.module.ResolutionException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,15 +27,16 @@ public class StudentService {
     public ResponseDto create(RequestDto studentreq){
 
         Student stu=mapToEntity(studentreq);
+        if(emailExsits(stu)){
+            throw  new DuplicateResourceException("Given Student Email " + stu.getEmail()+"is already Exsits");
+        }
         Student stu2=studentRepostiry.save(stu);
         return mapToDto(stu2);
     }
     public ResponseDto getstudent(Integer id){
-        Optional<Student> res=studentRepostiry.findByIdAndDeletedIsFalse(id);
-        if(res.isPresent()){
-             return mapToDto(res.get());
-        }
-        return null;
+        Student student=studentRepostiry.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Student with id "+id+" Not found"));
+        return mapToDto(student);
     }
     public List<UpdateResponseDto> getstuall() {
         List<Student> rew=studentRepostiry.findByDeletedIsFalse();
@@ -41,9 +45,8 @@ public class StudentService {
                 .toList();
     }
     public UpdateResponseDto stuup(UpdateRequestDto student, Integer id){
-        Optional<Student> tr=studentRepostiry.findById(id);
-        if(tr.isEmpty()) return null;
-        Student studenttosave=tr.get();
+        Student  studenttosave=studentRepostiry.findByIdAndDeletedIsFalse(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Record Not found"));
         studenttosave.setSubject(student.getSubject());
         studenttosave.setRollno(student.getRollno());
         studenttosave.setName(student.getName());
@@ -99,5 +102,8 @@ public class StudentService {
         responseDto.setMessage("Student Saved successful");
         responseDto.setUpdatedAt(LocalDateTime.now());
         return responseDto;
+    }
+    public boolean emailExsits(Student student) {
+        return  studentRepostiry.existsByEmail(student.getEmail());
     }
 }

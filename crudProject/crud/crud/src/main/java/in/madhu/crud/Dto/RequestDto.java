@@ -9,8 +9,8 @@ public class RequestDto {
 
     @Email(message = "Enter Correct Email")
     private String email;
-
-    private int rollno;
+    @Min(value = 18,message = "Rollno should be greater than 18")
+    private Integer rollno;
 
     @NotBlank
     private String subject;
@@ -23,6 +23,14 @@ public class RequestDto {
         this.name = name;
     }
 
+    public Integer getRollno() {
+        return rollno;
+    }
+
+    public void setRollno(Integer rollno) {
+        this.rollno = rollno;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -31,13 +39,6 @@ public class RequestDto {
         this.email = email;
     }
 
-    public int getRollno() {
-        return rollno;
-    }
-
-    public void setRollno(int rollno) {
-        this.rollno = rollno;
-    }
 
     public String getSubject() {
         return subject;
